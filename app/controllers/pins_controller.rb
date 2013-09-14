@@ -5,16 +5,31 @@ class PinsController < ApplicationController
   # GET /pins.json
   def index
     @pins = Pin.all
+    respond_to do |format|
+
+      format.html #index.html.erb
+      format json {render json: @pins}
   end
+end
 
   # GET /pins/1
   # GET /pins/1.json
   def show
+    @pin = Pin.find(params[:id])
+    respond_to do |format|
+      format.html
+      format json {render json: @pin}
+    end
   end
 
   # GET /pins/new
   def new
     @pin = current_user.pins.new
+    respond_to do |format|
+      format.html
+      format json {render json: @pin}
+    end
+
   end
 
   # GET /pins/1/edit
@@ -26,6 +41,7 @@ class PinsController < ApplicationController
   # POST /pins.json
   def create
     @pin = current_user.pins.new(params[:pin])
+  end
 
     respond_to do |format|
       if @pin.save
@@ -75,4 +91,4 @@ class PinsController < ApplicationController
     def pin_params
       params.require(:pin).permit(:description)
     end
-end
+
